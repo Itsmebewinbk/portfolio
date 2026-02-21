@@ -1,0 +1,271 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Great+Vibes&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 100% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --primary: 210 100% 50%;
+    --secondary: 150 80% 40%; /* Ghibli Green */
+    --accent: 45 100% 60%; /* Sun Gold */
+
+    --border: 214.3 31.8% 91.4%;
+    --radius: 2rem;
+  }
+
+  html.dark {
+    --background: 240 10% 2%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 4%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 2.5%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 240 3.7% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 12%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 217.2 91.2% 59.8%;
+    --accent-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 12%;
+    --input: 240 3.7% 12%;
+    --ring: 240 4.9% 83.9%;
+
+    --glass-bg: 0 0% 0%;
+    --glass-border: 240 3.7% 15%;
+    --glow-primary: 217.2 91.2% 59.8%;
+    --glow-secondary: 263.4 70% 50.4%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border selection:bg-blue-100 selection:text-blue-900;
+  }
+
+  html.dark * {
+    @apply selection:bg-blue-600/30 selection:text-white;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
+    /* Soft Blue Sky Gradient */
+    background: linear-gradient(
+      to bottom,
+      #e0f2fe 0%,
+      #f0f9ff 50%,
+      #ffffff 100%
+    );
+  }
+
+  html.dark body {
+    background: hsl(240 10% 2%);
+    background-image:
+      radial-gradient(
+        circle at 50% -20%,
+        hsl(217.2 91.2% 59.8% / 0.15),
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at 100% 100%,
+        hsl(240 3.7% 12% / 0.05),
+        transparent 50%
+      );
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-tight;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: "Outfit", sans-serif;
+  }
+
+  .font-cursive {
+    font-family: "Great Vibes", cursive;
+  }
+
+  .font-sans {
+    font-family: "Plus Jakarta Sans", sans-serif;
+  }
+
+  /* ===== Light Glass (Shinkai / Ghibli) ===== */
+  .glass-shinkai {
+    @apply bg-white/40 backdrop-blur-xl border border-white/60 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] transition-all duration-500;
+  }
+
+  html.dark .glass-shinkai {
+    @apply bg-black/40 backdrop-blur-2xl border-white/10 shadow-2xl;
+  }
+
+  /* ===== Dark glow effects ===== */
+  .dark .glow-text {
+    text-shadow: 0 0 30px hsl(var(--primary) / 0.6);
+  }
+
+  .dark .glow-box {
+    box-shadow: 0 0 60px -15px hsl(var(--primary) / 0.4);
+  }
+
+  .dark .glow-box-hover {
+    @apply transition-all duration-700;
+    transform-style: preserve-3d;
+  }
+
+  .dark .glow-box-hover:hover {
+    box-shadow: 0 0 80px -10px hsl(var(--primary) / 0.5);
+    transform: translateY(-12px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .btn-shinkai {
+    @apply relative px-10 py-5 bg-gradient-to-r from-blue-500 to-blue-400 text-white font-bold rounded-full shadow-lg hover:shadow-blue-500/40 hover:scale-105 active:scale-95 transition-all overflow-hidden flex items-center justify-center;
+  }
+
+  html.dark .btn-shinkai {
+    @apply from-blue-600 to-blue-500 shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60;
+  }
+
+  .btn-shinkai::after {
+    content: "";
+    @apply absolute inset-0 bg-white/20 translate-y-full transition-transform duration-300;
+  }
+
+  .btn-shinkai:hover::after {
+    @apply translate-y-0;
+  }
+
+  .section-padding {
+    @apply px-6 py-40 md:px-12 lg:px-24;
+  }
+
+  .ghibli-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 animate-gradient-x font-black;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 animate-gradient-x;
+  }
+
+  .komorebi-overlay {
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-blue-200/50 rounded-full hover:bg-blue-300/50 transition-colors;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    @apply bg-blue-500/30 hover:bg-blue-500/50;
+  }
+}
+
+@keyframes gradient-x {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 8s ease infinite;
+}
+
+@keyframes slow-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(2deg);
+  }
+}
+
+.animate-slow-float {
+  animation: slow-float 10s ease-in-out infinite;
+}
+
+/* Beautiful Sun Ray / God Ray effect */
+.sun-ray {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  width: 200%;
+  height: 150%;
+  background: repeating-conic-gradient(
+    from 180deg at 50% 0%,
+    rgba(255, 255, 255, 0) 0deg,
+    rgba(255, 255, 255, 0.05) 5deg,
+    rgba(255, 255, 255, 0) 10deg
+  );
+  filter: blur(50px);
+  pointer-events: none;
+  transform-origin: top;
+  animation: ray-rotate 120s linear infinite;
+}
+
+@keyframes ray-rotate {
+  from {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+/* Dark mode 3D utilities */
+.perspective-2000 {
+  perspective: 2000px;
+}
+
+.three-d-card {
+  transform-style: preserve-3d;
+}
+
+.three-d-float {
+  animation: slow-float 12s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
