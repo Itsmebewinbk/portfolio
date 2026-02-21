@@ -29,7 +29,7 @@ const projects = [
   {
     title: "RoseApp",
     tag: "EDTECH",
-    desc: "Sleek online tutoring platform with a dedicated educator dashboard and class management system. Built with SQLite3.",
+    desc: "Sleek online tutoring platform with a dedicated educator dashboard and class management system.",
     color: "from-cyan-100 to-cyan-50"
   },
   {
