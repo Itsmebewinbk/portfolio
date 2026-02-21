@@ -5,7 +5,7 @@ const experiences = [
   {
     company: "Cubet Techno Labs",
     role: "Software Engineer",
-    period: "Feb 2025 – Present",
+    period: "Jan 2026 – Present",
     points: [
       "Building full-stack applications with React and Django/FastAPI.",
       "Developing Generative AI solutions and intelligent automation systems.",
@@ -15,7 +15,7 @@ const experiences = [
   {
     company: "Leader Group",
     role: "Software Engineer",
-    period: "Jul 2024 – Jan 2025",
+    period: "Jul 2025 – Jan 2026",
     points: [
       "Architected secure document management ecosystems.",
       "Engineered high-performance background services with Django.",
@@ -35,7 +35,7 @@ const experiences = [
   {
     company: "Enfono Technologies",
     role: "Junior Software Engineer",
-    period: "Nov 2022 – Nov 2023",
+    period: "Nov 2022 – Dec 2023",
     points: [
       "Developed production-grade Web services with scalable foundations.",
       "Integrated secure authentication protocols and automated services.",
