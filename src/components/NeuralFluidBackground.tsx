@@ -17,7 +17,7 @@ const SunLight = memo(function SunLight() {
 });
 
 const Fireflies = memo(function Fireflies() {
-  const count = 80; // reduced from 100
+  const count = 120; // Increased for more snow effect
   const positions = useMemo(() => {
     const p = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -53,7 +53,7 @@ const Fireflies = memo(function Fireflies() {
 });
 
 const FloatingPetals = memo(function FloatingPetals() {
-  const petalCount = 18; // reduced from 30
+  const petalCount = 40; // Increased for more snow effect
   const petals = useMemo(() =>
     Array.from({ length: petalCount }, () => ({
       position: [
@@ -82,7 +82,7 @@ const FloatingPetals = memo(function FloatingPetals() {
 
   // Share a single geometry and material
   const geo = useMemo(() => new THREE.PlaneGeometry(0.15, 0.15), []);
-  const mat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#d1fae5", transparent: true, opacity: 0.5, side: THREE.DoubleSide }), []);
+  const mat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, opacity: 0.7, side: THREE.DoubleSide }), []);
 
   return (
     <group ref={ref}>

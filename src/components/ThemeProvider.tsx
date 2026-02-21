@@ -12,7 +12,11 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as Theme) || "light";
+      const savedTheme = localStorage.getItem("theme") as Theme;
+      if (savedTheme) return savedTheme;
+      
+      const hour = new Date().getHours();
+      return (hour >= 6 && hour < 18) ? "light" : "dark";
     }
     return "light";
   });
