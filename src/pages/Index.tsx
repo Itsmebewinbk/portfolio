@@ -19,22 +19,12 @@ const SectionFallback = () => (
 );
 
 const Index = () => {
-  const [showBg, setShowBg] = useState(false);
-
-  useEffect(() => {
-    // Delay background load to prioritize interaction and FCP
-    const timer = setTimeout(() => setShowBg(true), 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div className="relative min-h-screen selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-600/30 dark:selection:text-white font-sans overflow-x-hidden">
-      {/* 3D Background — lazy loaded & deferred */}
-      {showBg && (
-        <Suspense fallback={null}>
-          <NeuralFluidBackground />
-        </Suspense>
-      )}
+      {/* 3D Background — lazy loaded */}
+      <Suspense fallback={null}>
+        <NeuralFluidBackground />
+      </Suspense>
       
       <motion.div 
         initial={{ opacity: 0 }}
@@ -47,23 +37,35 @@ const Index = () => {
         
         <div className="relative z-10">
           <Suspense fallback={<SectionFallback />}>
-            <AboutSection />
+            <div className="content-lazy">
+              <AboutSection />
+            </div>
           </Suspense>
           <div className="h-40 bg-gradient-to-b from-transparent to-white/10 dark:to-transparent" />
           <Suspense fallback={<SectionFallback />}>
-            <SkillsSection />
+            <div className="content-lazy">
+              <SkillsSection />
+            </div>
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
-            <ExperienceSection />
+            <div className="content-lazy">
+              <ExperienceSection />
+            </div>
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
-            <ProjectsSection />
+            <div className="content-lazy">
+              <ProjectsSection />
+            </div>
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
-            <ContactSection />
+            <div className="content-lazy">
+              <ContactSection />
+            </div>
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
-            <Footer />
+            <div className="content-lazy">
+              <Footer />
+            </div>
           </Suspense>
         </div>
       </motion.div>
