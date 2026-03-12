@@ -77,7 +77,7 @@ const ProjectCard = memo(function ProjectCard({ project, index }: { project: typ
         <h3 className="text-3xl font-black text-blue-600 mb-6 tracking-tight uppercase italic group-hover:translate-x-2 transition-transform leading-none dark:text-white dark:not-italic dark:text-2xl">
           {project.title}
         </h3>
-        <p className="text-slate-500 leading-relaxed text-lg font-medium dark:text-white/60">
+        <p className="text-slate-600 leading-relaxed text-lg font-medium dark:text-white/60">
           {project.desc}
         </p>
       </div>
@@ -85,7 +85,7 @@ const ProjectCard = memo(function ProjectCard({ project, index }: { project: typ
       <div className="p-10 pt-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-1 bg-blue-500/20 rounded-full dark:bg-blue-500/50" />
-          <span className="text-[10px] font-bold text-blue-300 uppercase tracking-widest dark:text-white/30">Engineering Record // Verified</span>
+          <span className="text-[10px] font-bold text-blue-500 uppercase tracking-widest dark:text-white/30">Engineering Record // Verified</span>
         </div>
       </div>
     </motion.div>

@@ -32,7 +32,7 @@ export default function AboutSection() {
                 <p className="text-slate-700 leading-relaxed text-2xl sm:text-3xl font-bold italic tracking-tight dark:text-white/80 dark:text-xl dark:sm:text-2xl dark:font-medium dark:not-italic dark:tracking-normal">
                   "Engineering isn't just about code; it's about building bridges between human needs and digital possibilities."
                 </p>
-                <div className="space-y-6 text-slate-500 text-xl font-medium leading-relaxed dark:text-white/70 dark:text-lg dark:sm:text-xl">
+                <div className="space-y-6 text-slate-600 text-xl font-medium leading-relaxed dark:text-white/70 dark:text-lg dark:sm:text-xl">
                   <p>
                     With 3+ years of experience across high-growth tech environments, I specialize in 
                     architecting systems that are as beautiful in their logic as they are in their execution.

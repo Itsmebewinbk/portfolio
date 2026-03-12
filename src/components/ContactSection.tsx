@@ -22,7 +22,7 @@ export default function ContactSection() {
               <Phone size={36} className="dark:w-8 dark:h-8" />
             </div>
             <div className="text-center">
-              <span className="text-slate-400 font-bold text-[10px] tracking-[0.3em] uppercase block mb-2 dark:hidden">VOICE CALL</span>
+              <span className="text-slate-600 font-bold text-[10px] tracking-[0.3em] uppercase block mb-2 dark:hidden">VOICE CALL</span>
               <span className="text-blue-600 text-2xl font-black tracking-tighter italic dark:text-white dark:not-italic dark:tracking-widest dark:text-xl">+91 9567 138175</span>
             </div>
           </motion.a>
@@ -38,14 +38,14 @@ export default function ContactSection() {
               <Mail size={36} className="dark:w-8 dark:h-8" />
             </div>
             <div className="text-center">
-              <span className="text-slate-400 font-bold text-[10px] tracking-[0.3em] uppercase block mb-2 dark:hidden">WRITTEN MESSAGE</span>
+              <span className="text-slate-600 font-bold text-[10px] tracking-[0.3em] uppercase block mb-2 dark:hidden">WRITTEN MESSAGE</span>
               <span className="text-blue-600 text-xl font-black tracking-tighter break-all italic dark:text-white dark:not-italic dark:tracking-widest">bewinbabu1998@gmail.com</span>
             </div>
           </motion.a>
         </div>
 
         <div className="mt-20 glass-shinkai p-8 flex items-center justify-between border-dashed border-blue-200 bg-blue-50/20 dark:border-white/5 dark:bg-transparent dark:border-solid">
-            <span className="text-blue-400 font-bold tracking-widest text-xs uppercase flex items-center gap-3 dark:text-white/40">
+            <span className="text-blue-600 font-bold tracking-widest text-xs uppercase flex items-center gap-3 dark:text-white/40">
                <Send size={16} /> Awaiting your signal...
             </span>
             <div className="h-2 w-32 bg-blue-500/10 rounded-full dark:bg-white/5" />

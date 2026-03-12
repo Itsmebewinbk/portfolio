@@ -35,17 +35,27 @@ const Index = () => {
         <Navbar />
         <HeroSection />
         
-        <Suspense fallback={<SectionFallback />}>
-          <div className="relative z-10">
+        <div className="relative z-10">
+          <Suspense fallback={<SectionFallback />}>
             <AboutSection />
-            <div className="h-40 bg-gradient-to-b from-transparent to-white/10 dark:to-transparent" />
+          </Suspense>
+          <div className="h-40 bg-gradient-to-b from-transparent to-white/10 dark:to-transparent" />
+          <Suspense fallback={<SectionFallback />}>
             <SkillsSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
             <ExperienceSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
             <ProjectsSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
             <ContactSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
             <Footer />
-          </div>
-        </Suspense>
+          </Suspense>
+        </div>
       </motion.div>
 
       {/* Soft Bloom / Sunlight Overlay */}

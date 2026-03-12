@@ -45,7 +45,7 @@ export default function SkillsSection() {
                 {cat.skills.map((s) => (
                   <span 
                     key={s} 
-                    className="px-5 py-2 text-[11px] font-bold tracking-widest uppercase rounded-full bg-blue-50 text-blue-500 border border-blue-100 group-hover:bg-blue-500 group-hover:text-white transition-all cursor-default
+                    className="px-5 py-2 text-[11px] font-bold tracking-widest uppercase rounded-full bg-blue-50 text-blue-600 border border-blue-100 group-hover:bg-blue-500 group-hover:text-white transition-all cursor-default
                       dark:rounded-xl dark:bg-white/5 dark:text-white/80 dark:border-white/5 dark:font-black dark:py-2.5 dark:hover:border-white/20 dark:hover:bg-white/10 dark:group-hover:bg-white/10 dark:group-hover:text-white/90"
                   >
                     {s}

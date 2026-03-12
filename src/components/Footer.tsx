@@ -9,7 +9,7 @@ export default function Footer() {
            <h4 className="text-5xl sm:text-7xl font-black text-blue-600 italic uppercase tracking-tighter mb-8 drop-shadow-sm">
              Always Forward
            </h4>
-           <p className="text-slate-500 text-lg font-medium leading-relaxed">
+           <p className="text-slate-600 text-lg font-medium leading-relaxed">
              Continuing the journey of engineering excellence, one innovation at a time. 
              Let's build something beautiful together.
            </p>
@@ -19,6 +19,7 @@ export default function Footer() {
           href="https://www.linkedin.com/in/bewin-babu-150405170/" 
           target="_blank" 
           rel="noopener noreferrer"
+          aria-label="LinkedIn Profile"
           className="btn-shinkai px-16 py-7 text-xl shadow-2xl hover:shadow-blue-500/40 dark:bg-transparent dark:border dark:border-white/10 dark:rounded-2xl dark:px-6 dark:py-3 dark:text-white/60 dark:hover:text-white dark:shadow-none dark:hover:shadow-none dark:font-black dark:tracking-widest dark:uppercase dark:flex dark:items-center dark:gap-3 dark:text-sm"
         >
           <Linkedin size={20} className="hidden dark:inline" />
@@ -26,7 +27,7 @@ export default function Footer() {
         </a>
 
         <div className="w-full flex flex-col md:flex-row items-center justify-between pt-16 border-t border-blue-100/50 gap-8 dark:pt-8 dark:border-white/5 dark:justify-center">
-           <div className="flex items-center gap-6 text-slate-400 font-bold text-[11px] tracking-[0.3em] uppercase dark:hidden">
+           <div className="flex items-center gap-6 text-slate-600 font-bold text-[11px] tracking-[0.3em] uppercase dark:hidden">
               <span>BEWIN BABU</span>
               <div className="w-2 h-2 bg-blue-500/20 rounded-full" />
               <span>SOFTWARE ENGINEER</span>

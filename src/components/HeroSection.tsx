@@ -1,6 +1,6 @@
 import { motion, Variants } from "framer-motion";
 import { useState, useEffect, useCallback, memo } from "react";
-import profileImg from "@/assets/profile.jpg";
+import profileImg from "@/assets/profile.webp";
 
 const displaySkills = [
   "Building the Future", "Architecting Dreams", "Modern Engineering", "Innovative Solutions"
@@ -67,7 +67,7 @@ export default function HeroSection() {
         >
           <motion.p 
             variants={itemVariants}
-            className="font-cursive text-3xl text-blue-400 mb-6 dark:hidden"
+            className="font-cursive text-3xl text-blue-600 mb-6 dark:hidden"
           >
             Turning visions into reality...
           </motion.p>
@@ -102,7 +102,7 @@ export default function HeroSection() {
 
           <motion.p 
             variants={itemVariants}
-            className="text-slate-500 mb-12 max-w-xl mx-auto lg:mx-0 text-xl leading-relaxed font-medium dark:text-white/60"
+            className="text-slate-600 mb-12 max-w-xl mx-auto lg:mx-0 text-xl leading-relaxed font-medium dark:text-white/60"
           >
             I create sophisticated digital systems where beauty meets performance. 
             Blending high-end engineering with artistic intuition to build the next generation of software.
@@ -127,6 +127,7 @@ export default function HeroSection() {
               href="https://www.linkedin.com/in/bewin-babu-150405170/" 
               target="_blank" 
               rel="noopener noreferrer"
+              aria-label="LinkedIn Profile"
               className="text-blue-500 hover:text-blue-600 font-bold transition-all flex items-center gap-2 group dark:text-white dark:hover:text-blue-400 dark:border-b-2 dark:border-transparent dark:hover:border-blue-400 dark:pb-1"
             >
               MY LINKEDIN 

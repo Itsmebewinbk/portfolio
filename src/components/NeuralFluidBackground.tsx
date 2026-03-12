@@ -1,8 +1,23 @@
-import { useRef, useMemo, memo, Suspense, lazy } from "react";
+import { useRef, useMemo, memo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Sphere, Float, Stars, PerspectiveCamera, Points, PointMaterial, MeshDistortMaterial } from "@react-three/drei";
+import { Float, Stars, PerspectiveCamera, Points, PointMaterial, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import { useTheme } from "./ThemeProvider";
+
+/* ==============================
+   UTILS
+   ============================== */
+const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) setMatches(media.matches);
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [matches, query]);
+  return matches;
+};
 
 /* ==============================
    LIGHT THEME SCENE (Ghibli)
@@ -16,8 +31,8 @@ const SunLight = memo(function SunLight() {
   );
 });
 
-const Fireflies = memo(function Fireflies() {
-  const count = 120; // Increased for more snow effect
+const Fireflies = memo(function Fireflies({ isMobile }: { isMobile: boolean }) {
+  const count = isMobile ? 40 : 120;
   const positions = useMemo(() => {
     const p = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -26,7 +41,7 @@ const Fireflies = memo(function Fireflies() {
       p[i * 3 + 2] = (Math.random() - 0.5) * 20;
     }
     return p;
-  }, []);
+  }, [count]);
 
   const ref = useRef<THREE.Points>(null);
   useFrame((state) => {
@@ -42,7 +57,7 @@ const Fireflies = memo(function Fireflies() {
       <PointMaterial
         transparent
         color="#fbbf24"
-        size={0.12}
+        size={isMobile ? 0.08 : 0.12}
         sizeAttenuation
         depthWrite={false}
         blending={THREE.AdditiveBlending}
@@ -52,8 +67,8 @@ const Fireflies = memo(function Fireflies() {
   );
 });
 
-const FloatingPetals = memo(function FloatingPetals() {
-  const petalCount = 40; // Increased for more snow effect
+const FloatingPetals = memo(function FloatingPetals({ isMobile }: { isMobile: boolean }) {
+  const petalCount = isMobile ? 15 : 40;
   const petals = useMemo(() =>
     Array.from({ length: petalCount }, () => ({
       position: [
@@ -63,7 +78,7 @@ const FloatingPetals = memo(function FloatingPetals() {
       ] as [number, number, number],
       rotation: [Math.asin(Math.random()), Math.asin(Math.random()), Math.asin(Math.random())] as [number, number, number],
       speed: 0.01 + Math.random() * 0.03
-    })), []);
+    })), [petalCount]);
 
   const ref = useRef<THREE.Group>(null);
   useFrame((state) => {
@@ -72,15 +87,16 @@ const FloatingPetals = memo(function FloatingPetals() {
     const children = ref.current.children;
     for (let i = 0; i < children.length; i++) {
       const child = children[i];
-      child.position.y -= petals[i].speed;
-      child.position.x += Math.sin(t + i) * 0.005;
-      child.rotation.x += 0.005;
-      child.rotation.z += 0.005;
-      if (child.position.y < -15) child.position.y = 15;
+      if (child) {
+        child.position.y -= petals[i].speed;
+        child.position.x += Math.sin(t + i) * 0.005;
+        child.rotation.x += 0.005;
+        child.rotation.z += 0.005;
+        if (child.position.y < -15) child.position.y = 15;
+      }
     }
   });
 
-  // Share a single geometry and material
   const geo = useMemo(() => new THREE.PlaneGeometry(0.15, 0.15), []);
   const mat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, opacity: 0.7, side: THREE.DoubleSide }), []);
 
@@ -103,13 +119,13 @@ function DreamySky() {
   );
 }
 
-const LightScene = memo(function LightScene() {
+const LightScene = memo(function LightScene({ isMobile }: { isMobile: boolean }) {
   return (
     <>
       <DreamySky />
       <SunLight />
-      <Fireflies />
-      <FloatingPetals />
+      <Fireflies isMobile={isMobile} />
+      <FloatingPetals isMobile={isMobile} />
     </>
   );
 });
@@ -118,15 +134,15 @@ const LightScene = memo(function LightScene() {
    DARK THEME SCENE (Cyberpunk)
    ============================== */
 
-const CyberGrid = memo(function CyberGrid() {
+const CyberGrid = memo(function CyberGrid({ isMobile }: { isMobile: boolean }) {
   return (
     <group rotation={[Math.PI / 2.5, 0, 0]} position={[0, -2, 0]}>
-      <gridHelper args={[80, 40, "#3b82f6", "#1e293b"]} />
+      <gridHelper args={[isMobile ? 40 : 80, isMobile ? 20 : 40, "#3b82f6", "#1e293b"]} />
     </group>
   );
 });
 
-const FloatingStructure = memo(function FloatingStructure() {
+const FloatingStructure = memo(function FloatingStructure({ isMobile }: { isMobile: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
@@ -139,10 +155,10 @@ const FloatingStructure = memo(function FloatingStructure() {
   return (
     <Float speed={2} rotationIntensity={2} floatIntensity={5}>
       <mesh ref={meshRef} position={[0, 0.5, 0]}>
-        <icosahedronGeometry args={[2, 8]} />
+        <icosahedronGeometry args={[2, isMobile ? 4 : 8]} />
         <MeshDistortMaterial
           color="#1d4ed8"
-          speed={2}
+          speed={isMobile ? 1 : 2}
           distort={0.4}
           radius={1}
           emissive="#3b82f6"
@@ -156,8 +172,8 @@ const FloatingStructure = memo(function FloatingStructure() {
   );
 });
 
-const FloatingCubes = memo(function FloatingCubes() {
-  const cubeCount = 25; // reduced from 40
+const FloatingCubes = memo(function FloatingCubes({ isMobile }: { isMobile: boolean }) {
+  const cubeCount = isMobile ? 10 : 25;
   const cubes = useMemo(() =>
     Array.from({ length: cubeCount }, () => ({
       position: [
@@ -167,11 +183,9 @@ const FloatingCubes = memo(function FloatingCubes() {
       ] as [number, number, number],
       size: Math.random() * 0.5 + 0.1,
       speed: Math.random() * 0.5 + 0.2
-    })), []);
+    })), [cubeCount]);
 
   const ref = useRef<THREE.Group>(null);
-
-  // Share geometry and material across all cubes
   const mat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#3b82f6", opacity: 0.15, transparent: true }), []);
 
   useFrame((state) => {
@@ -179,9 +193,11 @@ const FloatingCubes = memo(function FloatingCubes() {
     const t = state.clock.getElapsedTime();
     const children = ref.current.children;
     for (let i = 0; i < children.length; i++) {
-      children[i].rotation.x += 0.01;
-      children[i].rotation.y += 0.01;
-      children[i].position.y += Math.sin(t * cubes[i].speed) * 0.01;
+      if (children[i]) {
+        children[i].rotation.x += 0.01;
+        children[i].rotation.y += 0.01;
+        children[i].position.y += Math.sin(t * cubes[i].speed) * 0.01;
+      }
     }
   });
 
@@ -196,16 +212,16 @@ const FloatingCubes = memo(function FloatingCubes() {
   );
 });
 
-const DarkScene = memo(function DarkScene() {
+const DarkScene = memo(function DarkScene({ isMobile }: { isMobile: boolean }) {
   return (
     <>
       <ambientLight intensity={0.4} />
       <pointLight position={[10, 10, 10]} intensity={1.5} color="#3b82f6" />
       <pointLight position={[-10, -10, -10]} intensity={1} color="#6366f1" />
-      <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
-      <CyberGrid />
-      <FloatingStructure />
-      <FloatingCubes />
+      <Stars radius={100} depth={50} count={isMobile ? 1000 : 3000} factor={4} saturation={0} fade speed={1} />
+      <CyberGrid isMobile={isMobile} />
+      <FloatingStructure isMobile={isMobile} />
+      <FloatingCubes isMobile={isMobile} />
       <fog attach="fog" args={["#020617", 5, 25]} />
     </>
   );
@@ -218,6 +234,7 @@ const DarkScene = memo(function DarkScene() {
 export default function NeuralFluidBackground() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
     <div className={`fixed inset-0 z-[-1] overflow-hidden transition-colors duration-700 ${
@@ -234,17 +251,24 @@ export default function NeuralFluidBackground() {
             </svg>
           </div>
 
-          <div className="absolute bottom-0 left-0 w-full h-[30vh] pointer-events-none opacity-40">
-            <svg viewBox="0 0 1440 320" className="absolute bottom-0 w-full h-full fill-emerald-100/60">
-              <path d="M0,192L48,208C96,224,192,256,288,234.7C384,213,480,139,576,144C672,149,768,235,864,240C960,245,1056,171,1152,144C1248,117,1344,139,1392,149.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-            </svg>
-          </div>
+          {!isMobile && (
+            <div className="absolute bottom-0 left-0 w-full h-[30vh] pointer-events-none opacity-40">
+              <svg viewBox="0 0 1440 320" className="absolute bottom-0 w-full h-full fill-emerald-100/60">
+                <path d="M0,192L48,208C96,224,192,256,288,234.7C384,213,480,139,576,144C672,149,768,235,864,240C960,245,1056,171,1152,144C1248,117,1344,139,1392,149.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+              </svg>
+            </div>
+          )}
         </>
       )}
 
-      <Canvas dpr={[1, 1.5]} performance={{ min: 0.5 }} gl={{ antialias: false, powerPreference: "high-performance" }}>
+      <Canvas 
+        dpr={isMobile ? 1 : [1, 1.5]} 
+        performance={{ min: 0.5 }} 
+        gl={{ antialias: false, powerPreference: "high-performance" }}
+        camera={{ position: isDark ? [0, 0, 10] : [0, 0, 15], fov: 75 }}
+      >
         <PerspectiveCamera makeDefault position={isDark ? [0, 0, 10] : [0, 0, 15]} fov={75} />
-        {isDark ? <DarkScene /> : <LightScene />}
+        {isDark ? <DarkScene isMobile={isMobile} /> : <LightScene isMobile={isMobile} />}
       </Canvas>
 
       {/* Overlays */}

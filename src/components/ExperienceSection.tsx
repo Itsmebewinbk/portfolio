@@ -58,19 +58,19 @@ const ExperienceCard = memo(function ExperienceCard({ exp, i }: { exp: typeof ex
             <h3 className="text-3xl font-black text-blue-600 uppercase italic tracking-tighter dark:text-white dark:not-italic dark:tracking-tight">
               {exp.company}
             </h3>
-            <p className="text-blue-400 font-bold uppercase tracking-[0.2em] text-sm mt-2 dark:text-blue-500">
+            <p className="text-blue-600 font-bold uppercase tracking-[0.2em] text-sm mt-2 dark:text-blue-500">
               {exp.role}
             </p>
           </div>
-          <span className="px-6 py-2 rounded-full bg-blue-50 text-blue-400 font-black text-[10px] tracking-widest border border-blue-100 uppercase dark:rounded-xl dark:bg-white/5 dark:text-white/60 dark:border-white/5 dark:text-xs">
+          <span className="px-6 py-2 rounded-full bg-blue-50 text-blue-600 font-black text-[10px] tracking-widest border border-blue-100 uppercase dark:rounded-xl dark:bg-white/5 dark:text-white/60 dark:border-white/5 dark:text-xs">
             {exp.period}
           </span>
         </div>
         
         <ul className="space-y-6">
           {exp.points.map((p, j) => (
-            <li key={j} className="text-slate-500 leading-relaxed text-lg font-medium flex gap-4 dark:text-white/60">
-              <span className="text-blue-300 dark:text-blue-500 dark:text-2xl">✦</span>{p}
+            <li key={j} className="text-slate-600 leading-relaxed text-lg font-medium flex gap-4 dark:text-white/60">
+              <span className="text-blue-500 dark:text-blue-500 dark:text-2xl">✦</span>{p}
             </li>
           ))}
         </ul>

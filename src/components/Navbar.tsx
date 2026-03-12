@@ -74,6 +74,7 @@ export default function Navbar() {
             href="https://www.linkedin.com/in/bewin-babu-150405170/" 
             target="_blank" 
             rel="noopener noreferrer"
+            aria-label="LinkedIn Profile"
             className="p-3 bg-blue-50 rounded-2xl text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm dark:bg-white/5 dark:text-white dark:border dark:border-white/10 dark:hover:bg-white/10 dark:shadow-none"
           >
             <Linkedin size={20} />
@@ -82,7 +83,7 @@ export default function Navbar() {
 
         <div className="md:hidden flex items-center gap-4">
           <ThemeToggle />
-          <button className="text-blue-600 dark:text-white" onClick={() => setOpen(!open)}>
+          <button aria-label="Toggle Menu" className="text-blue-600 dark:text-white" onClick={() => setOpen(!open)}>
             {open ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
