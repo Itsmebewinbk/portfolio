@@ -35,7 +35,7 @@
     --secondary-foreground: 0 0% 98%;
 
     --muted: 240 3.7% 12%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted-foreground: 240 5% 85%;
 
     --accent: 217.2 91.2% 59.8%;
     --accent-foreground: 0 0% 98%;
@@ -161,6 +161,8 @@
 
   .section-padding {
     @apply px-6 py-40 md:px-12 lg:px-24;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
   }
 
   .ghibli-text {

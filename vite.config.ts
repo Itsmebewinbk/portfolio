@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import viteCompression from "vite-plugin-compression";
 
 export default defineConfig({
   server: {
@@ -10,7 +11,17 @@ export default defineConfig({
       overlay: false,
     },
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    viteCompression({
+      algorithm: "gzip",
+      ext: ".gz",
+    }),
+    viteCompression({
+      algorithm: "brotliCompress",
+      ext: ".br",
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -26,7 +37,7 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 800,
     target: "es2020",
     minify: "esbuild",
   },

@@ -32,7 +32,7 @@ const TypingEffect = memo(function TypingEffect() {
   }, [text, deleting, index]);
 
   return (
-    <span className="font-sans text-blue-600 font-bold dark:font-mono dark:text-blue-400">
+    <span className="font-sans text-blue-600 font-bold dark:font-mono dark:text-blue-500">
       {text}<span className="animate-pulse">|</span>
     </span>
   );
@@ -81,7 +81,7 @@ export default function HeroSection() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
             </span>
-            <span className="text-[10px] tracking-[0.3em] uppercase text-blue-400 font-black">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-blue-500 font-black">
               Systems Architect & Developer
             </span>
           </motion.div>
@@ -102,7 +102,7 @@ export default function HeroSection() {
 
           <motion.p 
             variants={itemVariants}
-            className="text-slate-600 mb-12 max-w-xl mx-auto lg:mx-0 text-xl leading-relaxed font-medium dark:text-white/60"
+            className="text-slate-600 mb-12 max-w-xl mx-auto lg:mx-0 text-xl leading-relaxed font-medium dark:text-white/80"
           >
             I create sophisticated digital systems where beauty meets performance. 
             Blending high-end engineering with artistic intuition to build the next generation of software.

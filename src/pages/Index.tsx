@@ -1,4 +1,4 @@
-import { lazy, Suspense, memo } from "react";
+import { lazy, Suspense, memo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -19,12 +19,22 @@ const SectionFallback = () => (
 );
 
 const Index = () => {
+  const [showBg, setShowBg] = useState(false);
+
+  useEffect(() => {
+    // Delay background load to prioritize interaction and FCP
+    const timer = setTimeout(() => setShowBg(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="relative min-h-screen selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-600/30 dark:selection:text-white font-sans overflow-x-hidden">
-      {/* 3D Background — lazy loaded */}
-      <Suspense fallback={null}>
-        <NeuralFluidBackground />
-      </Suspense>
+      {/* 3D Background — lazy loaded & deferred */}
+      {showBg && (
+        <Suspense fallback={null}>
+          <NeuralFluidBackground />
+        </Suspense>
+      )}
       
       <motion.div 
         initial={{ opacity: 0 }}
