@@ -1,5 +1,5 @@
-import { m } from "framer-motion";
-import { memo } from "react";
+import { m, useScroll, useTransform, useMotionTemplate } from "framer-motion";
+import { memo, useRef } from "react";
 
 const projects = [
   {
@@ -47,14 +47,41 @@ const projects = [
 ];
 
 const ProjectCard = memo(function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Cinematic 3D transformations
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.85, 1, 0.85]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [20, 0, -20]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const blurValue = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [15, 0, 0, 15]);
+  const filter = useMotionTemplate`blur(${blurValue}px)`;
+  const yParallax = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
   return (
     <m.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.08 }}
-      className="glass-shinkai group overflow-hidden border-none shadow-xl hover:shadow-2xl h-full flex flex-col dark:glow-box-hover dark:three-d-card dark:hover:bg-white/[0.03]"
+      ref={cardRef}
+      style={{ 
+        scale, 
+        rotateX, 
+        opacity,
+        filter,
+        y: yParallax
+      }}
+      className="glass-shinkai group overflow-hidden border-none shadow-xl hover:shadow-2xl h-full flex flex-col dark:glow-box-hover dark:three-d-card dark:hover:bg-white/[0.03] perspective-2000"
     >
+      {/* Cinematic Lens Flare / Light Sweep */}
+      <m.div 
+        style={{ 
+          left: useTransform(scrollYProgress, [0, 1], ["-150%", "150%"]) 
+        }}
+        className="absolute inset-y-0 w-64 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 blur-3xl z-20 pointer-events-none" 
+      />
+
       {/* Light mode gradient header */}
       <div className={`h-48 bg-gradient-to-br ${project.color} relative overflow-hidden p-10 dark:hidden`}>
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/40 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
@@ -101,11 +128,19 @@ export default function ProjectsSection() {
           <div className="w-32 h-2 bg-blue-500/20 rounded-full dark:bg-blue-600/30 dark:shadow-[0_0_20px_rgba(37,99,235,0.4)]" />
         </div>
         
-        <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="max-w-7xl mx-auto perspective-2000">
+        <m.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="grid gap-24 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
+        >
           {projects.map((p, i) => (
-            <ProjectCard key={i} project={p} index={i} />
+            <div key={i} className={i % 2 === 0 ? "lg:mt-32" : ""}>
+              <ProjectCard project={p} index={i} />
+            </div>
           ))}
-        </div>
+        </m.div>
+      </div>
       </div>
     </section>
   );

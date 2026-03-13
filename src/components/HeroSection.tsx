@@ -1,5 +1,5 @@
-import { m, Variants } from "framer-motion";
-import { useState, useEffect, useCallback, memo } from "react";
+import { m, Variants, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect, useCallback, memo, useRef } from "react";
 import profileImg from "@/assets/profile.webp";
 
 const displaySkills = [
@@ -56,10 +56,29 @@ const itemVariants: Variants = {
 };
 
 export default function HeroSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
   return (
-    <section id="hero" className="relative min-h-screen flex items-center section-padding pt-32 overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-24 relative z-10">
+    <section 
+      ref={containerRef}
+      id="hero" 
+      className="relative min-h-[120vh] flex items-center section-padding pt-32 overflow-hidden"
+    >
+      <m.div 
+        style={{ opacity }}
+        className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-24 relative z-10"
+      >
         <m.div
+          style={{ y: textY }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -137,6 +156,7 @@ export default function HeroSection() {
         </m.div>
 
         <m.div
+          style={{ y: imageY, scale: imageScale }}
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
@@ -168,7 +188,7 @@ export default function HeroSection() {
             </span>
           </m.div>
         </m.div>
-      </div>
+      </m.div>
     </section>
   );
 }

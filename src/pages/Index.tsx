@@ -1,5 +1,5 @@
 import { lazy, Suspense, memo, useState, useEffect } from "react";
-import { m } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 
@@ -11,12 +11,36 @@ const ProjectsSection = lazy(() => import("@/components/ProjectsSection"));
 const ContactSection = lazy(() => import("@/components/ContactSection"));
 const Footer = lazy(() => import("@/components/Footer"));
 const NeuralFluidBackground = lazy(() => import("@/components/NeuralFluidBackground"));
+const MotionControlPanel = lazy(() => import("@/components/MotionControlPanel"));
 
 const SectionFallback = () => (
   <div className="section-padding flex items-center justify-center">
     <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
   </div>
 );
+
+const CinematicOverlay = () => {
+  const { scrollYProgress } = useScroll();
+  const barHeight = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], ["0%", "8%", "8%", "0%"]);
+  const vignetteOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 0.4]);
+
+  return (
+    <>
+      {/* Cinematic Bars */}
+      <m.div style={{ height: barHeight }} className="fixed top-0 left-0 right-0 bg-black z-[60] pointer-events-none" />
+      <m.div style={{ height: barHeight }} className="fixed bottom-0 left-0 right-0 bg-black z-[60] pointer-events-none" />
+      
+      {/* Grain / Noise Filter */}
+      <div className="fixed inset-0 z-[70] pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+      
+      {/* Edge Vignette */}
+      <m.div 
+        style={{ opacity: vignetteOpacity }}
+        className="fixed inset-0 z-[65] pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" 
+      />
+    </>
+  );
+};
 
 const Index = () => {
   const [showBackground, setShowBackground] = useState(false);
@@ -35,6 +59,8 @@ const Index = () => {
           <NeuralFluidBackground />
         </Suspense>
       )}
+      
+      <CinematicOverlay />
       
       <m.div 
         initial={{ opacity: 0 }}
@@ -79,6 +105,10 @@ const Index = () => {
           </Suspense>
         </div>
       </m.div>
+
+      <Suspense fallback={null}>
+        <MotionControlPanel />
+      </Suspense>
 
       {/* Soft Bloom / Sunlight Overlay */}
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.05)_0%,transparent_50%)] z-20 dark:opacity-0" />

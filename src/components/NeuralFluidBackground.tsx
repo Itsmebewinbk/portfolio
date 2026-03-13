@@ -1,8 +1,10 @@
 import { useRef, useMemo, memo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Stars, PerspectiveCamera, Points, PointMaterial, MeshDistortMaterial } from "@react-three/drei";
+import { useScroll, useTransform, useSpring } from "framer-motion";
 import * as THREE from "three";
 import { useTheme } from "./ThemeProvider";
+import { useMotion } from "./MotionProvider";
 
 /* ==============================
    UTILS
@@ -43,10 +45,11 @@ const Fireflies = memo(function Fireflies({ isMobile }: { isMobile: boolean }) {
     return p;
   }, [count]);
 
+  const { speed, isPaused } = useMotion();
   const ref = useRef<THREE.Points>(null);
   useFrame((state) => {
-    if (ref.current) {
-      const t = state.clock.getElapsedTime();
+    if (ref.current && !isPaused) {
+      const t = state.clock.getElapsedTime() * speed;
       ref.current.rotation.y = t * 0.05;
       ref.current.position.y = Math.sin(t * 0.4) * 0.3;
     }
@@ -80,18 +83,19 @@ const FloatingPetals = memo(function FloatingPetals({ isMobile }: { isMobile: bo
       speed: 0.01 + Math.random() * 0.03
     })), [petalCount]);
 
+  const { speed, isPaused } = useMotion();
   const ref = useRef<THREE.Group>(null);
   useFrame((state) => {
-    if (!ref.current) return;
-    const t = state.clock.getElapsedTime();
+    if (!ref.current || isPaused) return;
+    const t = state.clock.getElapsedTime() * speed;
     const children = ref.current.children;
     for (let i = 0; i < children.length; i++) {
       const child = children[i];
       if (child) {
-        child.position.y -= petals[i].speed;
+        child.position.y -= petals[i].speed * speed;
         child.position.x += Math.sin(t + i) * 0.005;
-        child.rotation.x += 0.005;
-        child.rotation.z += 0.005;
+        child.rotation.x += 0.005 * speed;
+        child.rotation.z += 0.005 * speed;
         if (child.position.y < -15) child.position.y = 15;
       }
     }
@@ -143,23 +147,24 @@ const CyberGrid = memo(function CyberGrid({ isMobile }: { isMobile: boolean }) {
 });
 
 const FloatingStructure = memo(function FloatingStructure({ isMobile }: { isMobile: boolean }) {
+  const { speed, intensity, isPaused } = useMotion();
   const meshRef = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
-    if (!meshRef.current) return;
-    const t = state.clock.getElapsedTime();
+    if (!meshRef.current || isPaused) return;
+    const t = state.clock.getElapsedTime() * speed;
     meshRef.current.rotation.x = t * 0.1;
     meshRef.current.rotation.y = t * 0.15;
   });
 
   return (
-    <Float speed={2} rotationIntensity={2} floatIntensity={5}>
+    <Float speed={2 * speed} rotationIntensity={2 * intensity} floatIntensity={5 * intensity}>
       <mesh ref={meshRef} position={[0, 0.5, 0]}>
         <icosahedronGeometry args={[2, isMobile ? 4 : 8]} />
         <MeshDistortMaterial
           color="#1d4ed8"
-          speed={isMobile ? 1 : 2}
-          distort={0.4}
+          speed={(isMobile ? 1 : 2) * speed}
+          distort={0.4 * intensity}
           radius={1}
           emissive="#3b82f6"
           emissiveIntensity={0.2}
@@ -185,17 +190,18 @@ const FloatingCubes = memo(function FloatingCubes({ isMobile }: { isMobile: bool
       speed: Math.random() * 0.5 + 0.2
     })), [cubeCount]);
 
+  const { speed, isPaused } = useMotion();
   const ref = useRef<THREE.Group>(null);
   const mat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#3b82f6", opacity: 0.15, transparent: true }), []);
 
   useFrame((state) => {
-    if (!ref.current) return;
-    const t = state.clock.getElapsedTime();
+    if (!ref.current || isPaused) return;
+    const t = state.clock.getElapsedTime() * speed;
     const children = ref.current.children;
     for (let i = 0; i < children.length; i++) {
       if (children[i]) {
-        children[i].rotation.x += 0.01;
-        children[i].rotation.y += 0.01;
+        children[i].rotation.x += 0.01 * speed;
+        children[i].rotation.y += 0.01 * speed;
         children[i].position.y += Math.sin(t * cubes[i].speed) * 0.01;
       }
     }
@@ -226,6 +232,28 @@ const DarkScene = memo(function DarkScene({ isMobile }: { isMobile: boolean }) {
     </>
   );
 });
+
+
+function CinematicCamera({ isDark }: { isDark: boolean }) {
+  const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  
+  const zPos = useTransform(smoothProgress, [0, 1], [isDark ? 10 : 15, isDark ? 25 : 30]);
+  const yPos = useTransform(smoothProgress, [0, 1], [0, -10]);
+  const rotation = useTransform(smoothProgress, [0, 1], [0, Math.PI / 10]);
+
+  const cameraRef = useRef<THREE.PerspectiveCamera>(null);
+
+  useFrame(() => {
+    if (cameraRef.current) {
+      cameraRef.current.position.z = zPos.get();
+      cameraRef.current.position.y = yPos.get();
+      cameraRef.current.rotation.x = rotation.get();
+    }
+  });
+
+  return <PerspectiveCamera ref={cameraRef} makeDefault fov={75} />;
+}
 
 /* ==============================
    MAIN COMPONENT
@@ -271,10 +299,9 @@ export default function NeuralFluidBackground() {
           stencil: false,
           depth: true
         }}
-        camera={{ position: isDark ? [0, 0, 10] : [0, 0, 15], fov: 75 }}
         shadows={false}
       >
-        <PerspectiveCamera makeDefault position={isDark ? [0, 0, 10] : [0, 0, 15]} fov={75} />
+        <CinematicCamera isDark={isDark} />
         {isDark ? <DarkScene isMobile={isMobile} /> : <LightScene isMobile={isMobile} />}
       </Canvas>
 
