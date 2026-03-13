@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
@@ -15,7 +15,7 @@ export default function ThemeToggle() {
     >
       <AnimatePresence mode="wait" initial={false}>
         {theme === "light" ? (
-          <motion.div
+          <m.div
             key="sun"
             initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
             animate={{ rotate: 0, opacity: 1, scale: 1 }}
@@ -23,9 +23,9 @@ export default function ThemeToggle() {
             transition={{ duration: 0.3 }}
           >
             <Sun size={20} />
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             key="moon"
             initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
             animate={{ rotate: 0, opacity: 1, scale: 1 }}
@@ -33,7 +33,7 @@ export default function ThemeToggle() {
             transition={{ duration: 0.3 }}
           >
             <Moon size={20} />
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </button>

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { memo } from "react";
 
 const projects = [
@@ -48,7 +48,7 @@ const projects = [
 
 const ProjectCard = memo(function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
@@ -88,7 +88,7 @@ const ProjectCard = memo(function ProjectCard({ project, index }: { project: typ
           <span className="text-[10px] font-bold text-blue-500 uppercase tracking-widest dark:text-white/30">Engineering Record // Verified</span>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 });
 

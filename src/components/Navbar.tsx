@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Menu, X, Linkedin, Map } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
@@ -33,7 +33,7 @@ export default function Navbar() {
   const closeMenu = useCallback(() => setOpen(false), []);
 
   return (
-    <motion.nav
+    <m.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
@@ -91,7 +91,7 @@ export default function Navbar() {
 
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -118,9 +118,9 @@ export default function Navbar() {
                 CONNECT ON LINKEDIN
               </a>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </m.nav>
   );
 }

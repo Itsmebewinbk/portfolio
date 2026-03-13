@@ -1,5 +1,5 @@
 import { lazy, Suspense, memo, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 
@@ -19,17 +19,27 @@ const SectionFallback = () => (
 );
 
 const Index = () => {
+  const [showBackground, setShowBackground] = useState(false);
+
+  useEffect(() => {
+    // Delay background initialization to let LCP finish first
+    const timer = setTimeout(() => setShowBackground(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="relative min-h-screen selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-600/30 dark:selection:text-white font-sans overflow-x-hidden">
-      {/* 3D Background — lazy loaded */}
-      <Suspense fallback={null}>
-        <NeuralFluidBackground />
-      </Suspense>
+      {/* 3D Background — deferred initialization */}
+      {showBackground && (
+        <Suspense fallback={null}>
+          <NeuralFluidBackground />
+        </Suspense>
+      )}
       
-      <motion.div 
+      <m.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10"
       >
         <Navbar />
@@ -68,7 +78,7 @@ const Index = () => {
             </div>
           </Suspense>
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Soft Bloom / Sunlight Overlay */}
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.05)_0%,transparent_50%)] z-20 dark:opacity-0" />

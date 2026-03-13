@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { memo } from "react";
 
 const experiences = [
@@ -46,7 +46,7 @@ const experiences = [
 
 const ExperienceCard = memo(function ExperienceCard({ exp, i }: { exp: typeof experiences[0]; i: number }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, x: i % 2 === 0 ? -60 : 60 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-50px" }}
@@ -75,7 +75,7 @@ const ExperienceCard = memo(function ExperienceCard({ exp, i }: { exp: typeof ex
           ))}
         </ul>
       </div>
-    </motion.div>
+    </m.div>
   );
 });
 

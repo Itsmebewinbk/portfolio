@@ -36,9 +36,9 @@ const Fireflies = memo(function Fireflies({ isMobile }: { isMobile: boolean }) {
   const positions = useMemo(() => {
     const p = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      p[i * 3] = (Math.random() - 0.5) * 30;
-      p[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      p[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      p[i * 3] = (Math.random() - 0.5) * 20;
+      p[i * 3 + 1] = (Math.random() - 0.5) * 15;
+      p[i * 3 + 2] = (Math.random() - 0.5) * 15;
     }
     return p;
   }, [count]);
@@ -218,7 +218,7 @@ const DarkScene = memo(function DarkScene({ isMobile }: { isMobile: boolean }) {
       <ambientLight intensity={0.4} />
       <pointLight position={[10, 10, 10]} intensity={1.5} color="#3b82f6" />
       <pointLight position={[-10, -10, -10]} intensity={1} color="#6366f1" />
-      <Stars radius={100} depth={50} count={isMobile ? 1000 : 3000} factor={4} saturation={0} fade speed={1} />
+      <Stars radius={50} depth={50} count={isMobile ? 500 : 1500} factor={4} saturation={0} fade speed={1} />
       <CyberGrid isMobile={isMobile} />
       <FloatingStructure isMobile={isMobile} />
       <FloatingCubes isMobile={isMobile} />
@@ -264,8 +264,15 @@ export default function NeuralFluidBackground() {
       <Canvas 
         dpr={isMobile ? 1 : [1, 1.5]} 
         performance={{ min: 0.5 }} 
-        gl={{ antialias: false, powerPreference: "high-performance" }}
+        gl={{ 
+          antialias: false, 
+          powerPreference: "high-performance",
+          alpha: true,
+          stencil: false,
+          depth: true
+        }}
         camera={{ position: isDark ? [0, 0, 10] : [0, 0, 15], fov: 75 }}
+        shadows={false}
       >
         <PerspectiveCamera makeDefault position={isDark ? [0, 0, 10] : [0, 0, 15]} fov={75} />
         {isDark ? <DarkScene isMobile={isMobile} /> : <LightScene isMobile={isMobile} />}

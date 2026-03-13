@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const categories = [
   { 
@@ -30,7 +30,7 @@ export default function SkillsSection() {
         
         <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           {categories.map((cat, ci) => (
-            <motion.div
+            <m.div
               key={cat.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ export default function SkillsSection() {
                   </span>
                 ))}
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

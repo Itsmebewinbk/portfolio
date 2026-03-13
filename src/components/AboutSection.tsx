@@ -1,10 +1,10 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 export default function AboutSection() {
   return (
     <section id="about" className="section-padding relative z-10 overflow-hidden">
       <div className="max-w-5xl mx-auto perspective-2000">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -45,7 +45,7 @@ export default function AboutSection() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

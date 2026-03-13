@@ -30,15 +30,26 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          "three-vendor": ["three", "@react-three/fiber", "@react-three/drei"],
-          "framer": ["framer-motion"],
-          "react-vendor": ["react", "react-dom", "react-router-dom"],
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("three") || id.includes("@react-three")) {
+              return "three-vendor";
+            }
+            if (id.includes("framer-motion")) {
+              return "framer-vendor";
+            }
+            if (id.includes("lucide-react")) {
+              return "icons-vendor";
+            }
+            return "vendor";
+          }
         },
       },
     },
-    chunkSizeWarningLimit: 800,
-    target: "es2020",
+    chunkSizeWarningLimit: 1000,
+    target: "esnext",
     minify: "esbuild",
+    cssCodeSplit: true,
+    sourcemap: false,
   },
 });

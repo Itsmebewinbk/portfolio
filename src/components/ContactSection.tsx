@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Phone, Mail, Send } from "lucide-react";
 
 export default function ContactSection() {
@@ -11,7 +11,7 @@ export default function ContactSection() {
         </div>
         
         <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2">
-          <motion.a
+          <m.a
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -25,9 +25,9 @@ export default function ContactSection() {
               <span className="text-slate-600 font-bold text-[10px] tracking-[0.3em] uppercase block mb-2 dark:hidden">VOICE CALL</span>
               <span className="text-blue-600 text-2xl font-black tracking-tighter italic dark:text-white dark:not-italic dark:tracking-widest dark:text-xl">+91 9567 138175</span>
             </div>
-          </motion.a>
+          </m.a>
 
-          <motion.a
+          <m.a
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -41,7 +41,7 @@ export default function ContactSection() {
               <span className="text-slate-600 font-bold text-[10px] tracking-[0.3em] uppercase block mb-2 dark:hidden">WRITTEN MESSAGE</span>
               <span className="text-blue-600 text-xl font-black tracking-tighter break-all italic dark:text-white dark:not-italic dark:tracking-widest">bewinbabu1998@gmail.com</span>
             </div>
-          </motion.a>
+          </m.a>
         </div>
 
         <div className="mt-20 glass-shinkai p-8 flex items-center justify-between border-dashed border-blue-200 bg-blue-50/20 dark:border-white/5 dark:bg-transparent dark:border-solid">
