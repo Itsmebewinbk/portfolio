@@ -33,7 +33,7 @@ export default function Footer() {
               <span>SOFTWARE ENGINEER</span>
            </div>
            <p className="text-[11px] text-slate-600 tracking-[0.4em] uppercase font-bold flex items-center gap-2 dark:text-white/80 dark:tracking-[0.2em] dark:text-sm dark:font-black">
-              © 2026 <span className="dark:inline"> </span>
+              © {new Date().getFullYear()} <span className="dark:inline"> </span>
               <span className="dark:text-white">BEWIN BABU</span>
               <span className="dark:hidden"><Heart size={14} className="text-red-300 fill-red-300" /></span>
               <span className="hidden dark:inline"> | ADVANCED SOFTWARE ENGINEERING</span>

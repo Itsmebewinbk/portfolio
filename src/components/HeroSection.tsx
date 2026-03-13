@@ -143,13 +143,10 @@ export default function HeroSection() {
               VIEW INNOVATIONS
             </a>
             <a 
-              href="https://www.linkedin.com/in/bewin-babu-150405170/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              aria-label="LinkedIn Profile"
-              className="text-blue-500 hover:text-blue-600 font-bold transition-all flex items-center gap-2 group dark:text-white dark:hover:text-blue-400 dark:border-b-2 dark:border-transparent dark:hover:border-blue-400 dark:pb-1"
+              href="#contact" 
+              className="px-12 py-6 text-lg font-black tracking-widest text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 group border-2 border-slate-200 rounded-[2rem] dark:text-white/60 dark:border-white/10 dark:hover:border-blue-500 dark:hover:text-blue-500"
             >
-              MY LINKEDIN 
+              LET'S TALK
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </m.div>
@@ -168,6 +165,8 @@ export default function HeroSection() {
             <img
               src={profileImg}
               alt="Bewin Babu"
+              width={500}
+              height={500}
               className="w-full h-full object-cover object-[center_12%] transition-transform duration-[3s] hover:scale-110"
               loading="eager"
               fetchPriority="high"
@@ -184,7 +183,7 @@ export default function HeroSection() {
             className="absolute -bottom-10 -right-10 glass-shinkai px-10 py-6 border-white/80 shadow-xl dark:border-white/10 dark:glow-box"
           >
             <span className="text-blue-600 font-black text-xl italic uppercase font-display leading-tight dark:text-white dark:not-italic dark:tracking-widest dark:text-lg">
-              3+ YEARS <br /> OF EXCELLENCE
+              {new Date().getFullYear() - 2023}+ YEARS <br /> OF EXCELLENCE
             </span>
           </m.div>
         </m.div>

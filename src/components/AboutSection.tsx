@@ -34,7 +34,7 @@ export default function AboutSection() {
                 </p>
                 <div className="space-y-6 text-slate-600 text-xl font-medium leading-relaxed dark:text-white/70 dark:text-lg dark:sm:text-xl">
                   <p>
-                    With 3+ years of experience across high-growth tech environments, I specialize in 
+                    With {new Date().getFullYear() - 2023}+ years of experience across high-growth tech environments, I specialize in 
                     architecting systems that are as beautiful in their logic as they are in their execution.
                   </p>
                   <p>
