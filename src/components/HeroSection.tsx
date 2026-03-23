@@ -11,8 +11,16 @@ const TypingEffect = memo(function TypingEffect() {
   const [index, setIndex] = useState(0);
   const [text, setText] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
+    // Delay typing start to let initial render finish
+    const timer = setTimeout(() => setStarted(true), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
     const current = displaySkills[index % displaySkills.length];
     
     const timeout = setTimeout(() => {
@@ -30,11 +38,11 @@ const TypingEffect = memo(function TypingEffect() {
       }
     }, deleting ? 30 : 70);
     return () => clearTimeout(timeout);
-  }, [text, deleting, index]);
+  }, [text, deleting, index, started]);
 
   return (
     <span className="font-sans text-blue-600 font-bold dark:font-mono dark:text-blue-500">
-      {text}<span className="animate-pulse">|</span>
+      {text}<span className="animate-pulse" aria-hidden="true">|</span>
     </span>
   );
 });
@@ -117,21 +125,27 @@ export default function HeroSection() {
           </m.div>
           
           <m.h1 
-            variants={itemVariants}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="text-6xl sm:text-7xl lg:text-8xl font-black mb-10 leading-[0.85] tracking-tighter text-blue-600 drop-shadow-sm dark:text-white dark:drop-shadow-none"
           >
             BEWIN <br /> BABU
           </m.h1>
 
           <m.h2 
-            variants={itemVariants}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             className="text-3xl sm:text-4xl font-bold text-slate-700 mb-10 flex items-center justify-center lg:justify-start gap-4 dark:text-white/90 dark:font-black dark:gradient-text"
           >
             Software Engineer
           </m.h2>
 
           <m.p 
-            variants={itemVariants}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             className="text-slate-600 mb-12 max-w-xl mx-auto lg:mx-0 text-xl leading-relaxed font-medium dark:text-white/80"
           >
             I create sophisticated digital systems where beauty meets performance. 
@@ -139,10 +153,12 @@ export default function HeroSection() {
           </m.p>
           
           <m.div 
-            variants={itemVariants}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
             className="h-10 text-xl font-sans mb-16 flex items-center justify-center lg:justify-start bg-white/30 backdrop-blur-sm self-start px-8 py-10 rounded-3xl border border-white/50 inline-flex shadow-sm dark:bg-transparent dark:border-0 dark:shadow-none dark:px-0 dark:py-0 dark:rounded-none"
           >
-            <span className="hidden dark:inline mr-3 text-blue-500 font-black text-2xl">&gt;</span>
+            <span className="hidden dark:inline mr-3 text-blue-500 font-black text-2xl" aria-hidden="true">&gt;</span>
             <TypingEffect />
           </m.div>
 

@@ -101,12 +101,7 @@ const Index = () => {
       
       <CinematicOverlay />
       
-      <m.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10"
-      >
+      <div className="relative z-10">
         <Navbar />
         <HeroSection />
         
@@ -149,7 +144,7 @@ const Index = () => {
             </div>
           </Suspense>
         </div>
-      </m.div>
+      </div>
 
       {showMotionControl && (
         <Suspense fallback={null}>
