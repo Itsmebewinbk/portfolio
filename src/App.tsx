@@ -4,6 +4,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { MotionProvider } from "@/components/MotionProvider";
 import { LazyMotion, domAnimation } from "framer-motion";
 
+import { Analytics } from "@vercel/analytics/react";
+
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -18,6 +20,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          <Analytics />
         </BrowserRouter>
       </LazyMotion>
     </MotionProvider>
