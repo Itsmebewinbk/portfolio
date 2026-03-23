@@ -1,6 +1,7 @@
-import { m, Variants, useScroll, useTransform } from "framer-motion";
+import { m, Variants, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useState, useEffect, useCallback, memo, useRef } from "react";
 import profileImg from "@/assets/profile.webp";
+import { useConnection } from "@/hooks/useConnection";
 
 const displaySkills = [
   "Building the Future", "Architecting Dreams", "Modern Engineering", "Innovative Solutions"
@@ -38,34 +39,45 @@ const TypingEffect = memo(function TypingEffect() {
   );
 });
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.5 },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { isLite } = useConnection();
+  const prefersReducedMotion = useReducedMotion();
+  const optimizeForLite = isLite || prefersReducedMotion;
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   });
 
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
+  // Parallax effects — reduced or disabled on lite/mobile
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", optimizeForLite ? "10%" : "50%"]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", optimizeForLite ? "0%" : "20%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, optimizeForLite ? 1 : 1.2]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { 
+        staggerChildren: optimizeForLite ? 0.05 : 0.15, 
+        delayChildren: optimizeForLite ? 0.2 : 0.5 
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: optimizeForLite ? 10 : 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { 
+        duration: optimizeForLite ? 0.4 : 0.8, 
+        ease: [0.22, 1, 0.36, 1] 
+      },
+    },
+  };
 
   return (
     <section 
@@ -74,7 +86,7 @@ export default function HeroSection() {
       className="relative min-h-[120vh] flex items-center section-padding pt-32 overflow-hidden"
     >
       <m.div 
-        style={{ opacity }}
+        style={{ opacity: optimizeForLite ? 1 : opacity }}
         className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-24 relative z-10"
       >
         <m.div
@@ -91,13 +103,12 @@ export default function HeroSection() {
             Turning visions into reality...
           </m.p>
 
-          {/* Dark mode status badge */}
           <m.div 
             variants={itemVariants}
             className="hidden dark:inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 mb-10"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className={`absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75 ${optimizeForLite ? '' : 'animate-ping'}`}></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
             </span>
             <span className="text-[10px] tracking-[0.3em] uppercase text-blue-500 font-black">
@@ -139,29 +150,38 @@ export default function HeroSection() {
             variants={itemVariants}
             className="flex flex-wrap gap-8 justify-center lg:justify-start items-center"
           >
-            <a href="#projects" className="btn-shinkai px-12 py-6 text-lg dark:rounded-3xl dark:shadow-2xl dark:shadow-blue-500/40 dark:hover:shadow-blue-500/60">
+            <a 
+              href="#projects" 
+              aria-label="View Bewin Babu's innovations and projects"
+              className="btn-shinkai px-12 py-6 text-lg dark:rounded-3xl dark:shadow-2xl dark:shadow-blue-500/40 dark:hover:shadow-blue-500/60"
+            >
               VIEW INNOVATIONS
             </a>
             <a 
               href="#contact" 
+              aria-label="Contact Bewin Babu for collaboration"
               className="px-12 py-6 text-lg font-black tracking-widest text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 group border-2 border-slate-200 rounded-[2rem] dark:text-white/60 dark:border-white/10 dark:hover:border-blue-500 dark:hover:text-blue-500"
             >
               LET'S TALK
-              <span className="group-hover:translate-x-1 transition-transform">→</span>
+              <span className="group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
             </a>
           </m.div>
         </m.div>
 
         <m.div
-          style={{ y: imageY, scale: imageScale }}
+          style={{ y: optimizeForLite ? 0 : imageY, scale: optimizeForLite ? 1 : imageScale }}
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          transition={{ 
+            duration: optimizeForLite ? 0.6 : 1.2, 
+            ease: [0.22, 1, 0.36, 1], 
+            delay: optimizeForLite ? 0.1 : 0.3 
+          }}
           className="relative group perspective-2000"
         >
-          <div className="absolute inset-0 bg-blue-100 blur-[120px] rounded-full opacity-60 animate-pulse dark:bg-blue-500/20 dark:blur-[100px] dark:rounded-none dark:opacity-100" />
+          <div className={`absolute inset-0 bg-blue-100 blur-[120px] rounded-full opacity-60 dark:bg-blue-500/20 dark:blur-[100px] dark:rounded-none dark:opacity-100 ${optimizeForLite ? '' : 'animate-pulse'}`} />
           
-          <div className="relative w-80 h-80 sm:w-[500px] sm:h-[500px] rounded-[5rem] overflow-hidden border-[12px] border-white shadow-2xl animate-slow-float dark:border-2 dark:border-white/10 dark:rounded-[4rem] dark:three-d-float">
+          <div className={`relative w-80 h-80 sm:w-[500px] sm:h-[500px] rounded-[5rem] overflow-hidden border-[12px] border-white shadow-2xl dark:border-2 dark:border-white/10 dark:rounded-[4rem] ${optimizeForLite ? '' : 'animate-slow-float dark:three-d-float'}`}>
             <img
               src={profileImg}
               alt="Bewin Babu"
@@ -175,11 +195,10 @@ export default function HeroSection() {
             <div className="absolute inset-0 bg-gradient-to-t from-blue-100/30 to-transparent mix-blend-overlay dark:from-black/60 dark:mix-blend-normal" />
           </div>
 
-          {/* 3+ Years badge — visible in BOTH light and dark */}
           <m.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1.5 }}
+            transition={{ delay: optimizeForLite ? 0.5 : 1.5 }}
             className="absolute -bottom-10 -right-10 glass-shinkai px-10 py-6 border-white/80 shadow-xl dark:border-white/10 dark:glow-box"
           >
             <span className="text-blue-600 font-black text-xl italic uppercase font-display leading-tight dark:text-white dark:not-italic dark:tracking-widest dark:text-lg">

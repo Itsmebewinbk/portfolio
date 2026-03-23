@@ -48,10 +48,10 @@ export default function Navbar() {
           ? "glass-shinkai border-white/80 px-6 py-3 shadow-xl rounded-2xl"
           : "glass-shinkai border-white/60 px-10 py-5 shadow-lg"
       } dark:rounded-none dark:border-0 dark:border-b dark:border-white/5 dark:shadow-none dark:bg-[#020617]/80 dark:backdrop-blur-2xl dark:px-6 dark:py-5`}>
-        <a href="#" className="flex items-center gap-3">
+        <a href="#" aria-label="Bewin Babu - Home" className="flex items-center gap-3">
           <div className={`bg-blue-500 rounded-2xl text-white shadow-lg transition-all duration-500 ${scrolled ? "p-1.5" : "p-2"} dark:bg-transparent dark:shadow-none dark:p-0`}>
-            <Map size={scrolled ? 20 : 24} className="dark:hidden" />
-            <span className="hidden dark:inline text-2xl font-black text-white tracking-widest uppercase">BB</span>
+            <Map size={scrolled ? 20 : 24} className="dark:hidden" aria-hidden="true" />
+            <span className="hidden dark:inline text-2xl font-black text-white tracking-widest uppercase" aria-hidden="true">BB</span>
           </div>
           <span className={`font-black text-blue-600 italic tracking-tighter uppercase drop-shadow-sm transition-all duration-500 ${scrolled ? "text-xl" : "text-2xl"} dark:text-white dark:not-italic dark:tracking-widest dark:drop-shadow-none`}>
             BEWIN
@@ -63,10 +63,11 @@ export default function Navbar() {
             <a 
               key={l.href} 
               href={l.href} 
+              aria-label={`Navigate to ${l.label} section`}
               className="text-[11px] tracking-[0.3em] font-black uppercase text-slate-500 hover:text-blue-500 transition-all relative group/link dark:text-white/60 dark:hover:text-white dark:tracking-[0.2em]"
             >
               {l.label}
-              <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-blue-500 group-hover/link:w-full transition-all dark:bg-white" />
+              <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-blue-500 group-hover/link:w-full transition-all dark:bg-white" aria-hidden="true" />
             </a>
           ))}
           <ThemeToggle />
@@ -74,17 +75,21 @@ export default function Navbar() {
             href="https://www.linkedin.com/in/bewin-babu-150405170/" 
             target="_blank" 
             rel="noopener noreferrer"
-            aria-label="LinkedIn Profile"
+            aria-label="Visit Bewin Babu's LinkedIn Profile (opens in new tab)"
             className="p-3 bg-blue-50 rounded-2xl text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm dark:bg-white/5 dark:text-white dark:border dark:border-white/10 dark:hover:bg-white/10 dark:shadow-none"
           >
-            <Linkedin size={20} />
+            <Linkedin size={20} aria-hidden="true" />
           </a>
         </div>
 
         <div className="md:hidden flex items-center gap-4">
           <ThemeToggle />
-          <button aria-label="Toggle Menu" className="text-blue-600 dark:text-white" onClick={() => setOpen(!open)}>
-            {open ? <X size={28} /> : <Menu size={28} />}
+          <button 
+            aria-label={open ? "Close navigation menu" : "Open navigation menu"} 
+            className="text-blue-600 dark:text-white" 
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <X size={28} aria-hidden="true" /> : <Menu size={28} aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -103,6 +108,7 @@ export default function Navbar() {
                   key={l.href} 
                   href={l.href} 
                   onClick={closeMenu} 
+                  aria-label={`Navigate to ${l.label} section`}
                   className="text-2xl font-black text-slate-700 italic uppercase tracking-tighter hover:text-blue-500 transition-colors dark:text-white/70 dark:hover:text-white dark:not-italic dark:tracking-widest dark:text-lg"
                 >
                   {l.label}
@@ -112,9 +118,10 @@ export default function Navbar() {
                 href="https://www.linkedin.com/in/bewin-babu-150405170/" 
                 target="_blank" 
                 rel="noopener noreferrer"
+                aria-label="Connect with Bewin Babu on LinkedIn (opens in new tab)"
                 className="btn-shinkai w-full dark:bg-transparent dark:border dark:border-white/10 dark:shadow-none dark:text-blue-400 dark:flex dark:items-center dark:gap-2"
               >
-                <Linkedin size={20} className="hidden dark:inline" />
+                <Linkedin size={20} className="hidden dark:inline" aria-hidden="true" />
                 CONNECT ON LINKEDIN
               </a>
             </div>

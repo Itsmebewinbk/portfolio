@@ -200,6 +200,23 @@
   html.dark ::-webkit-scrollbar-thumb {
     @apply bg-blue-500/30 hover:bg-blue-500/50;
   }
+
+  /* ===== Lite Mode Simplifications (For slow net / low end) ===== */
+  .lite-mode .sun-ray,
+  .lite-mode .komorebi-overlay,
+  .lite-mode .animate-gradient-x,
+  .lite-mode .animate-slow-float,
+  .lite-mode .three-d-float,
+  .lite-mode .animate-pulse {
+    animation: none !important;
+    display: none !important;
+  }
+
+  .lite-mode * {
+    transition-duration: 0.2s !important;
+    transform: none !important;
+    backdrop-filter: none !important;
+  }
 }
 
 @keyframes gradient-x {
@@ -271,4 +288,25 @@
 .three-d-float {
   animation: slow-float 12s ease-in-out infinite;
   transform-style: preserve-3d;
+}
+
+/* ===== Reduced Motion Support ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-slow-float,
+  .three-d-float {
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }

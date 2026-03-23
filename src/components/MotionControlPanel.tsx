@@ -12,6 +12,8 @@ export default function MotionControlPanel() {
       <AnimatePresence>
         {isOpen && (
           <m.div
+            role="dialog"
+            aria-label="Motion Settings"
             initial={{ opacity: 0, scale: 0.9, y: 20, filter: "blur(10px)" }}
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, scale: 0.9, y: 20, filter: "blur(10px)" }}
@@ -28,9 +30,11 @@ export default function MotionControlPanel() {
               </div>
               <button 
                 onClick={() => setIsOpen(false)}
+                aria-label="Close motion settings"
+                title="Close"
                 className="p-2 hover:bg-white/10 rounded-full transition-colors dark:text-white/40 dark:hover:text-white"
               >
-                <X size={16} />
+                <X size={16} aria-hidden="true" />
               </button>
             </div>
 
@@ -41,6 +45,8 @@ export default function MotionControlPanel() {
                 <div className="flex items-center gap-3">
                   <button 
                     onClick={() => setIsPaused(!isPaused)}
+                    aria-label={isPaused ? "Resume animations" : "Pause animations"}
+                    title={isPaused ? "Resume" : "Pause"}
                     className={`flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl transition-all font-black text-xs tracking-widest uppercase border ${
                       isPaused 
                         ? "bg-blue-500 text-white border-blue-400" 
@@ -115,6 +121,8 @@ export default function MotionControlPanel() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? "Close motion settings panel" : "Open motion settings panel"}
+        title={isOpen ? "Close Settings" : "Motion Settings"}
         className="group relative flex items-center justify-center w-20 h-20 rounded-[2rem] glass-shinkai bg-blue-600 dark:bg-blue-600 text-white shadow-[0_20px_50px_rgba(37,99,235,0.4)] overflow-hidden transition-all duration-500"
       >
         <m.div 

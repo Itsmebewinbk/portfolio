@@ -7,8 +7,8 @@ import { useTheme } from "./ThemeProvider";
 import { useMotion } from "./MotionProvider";
 
 /* ==============================
-   UTILS
-   ============================== */
+    UTILS
+    ============================== */
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(false);
   useEffect(() => {
@@ -20,6 +20,23 @@ const useMediaQuery = (query: string) => {
   }, [matches, query]);
   return matches;
 };
+
+const usePrefersReducedMotion = () => {
+  const [prefersReduced, setPrefersReduced] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReduced(media.matches);
+    const listener = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, []);
+  return prefersReduced;
+};
+
+// Memoized shared geometries to avoid recreating on each render
+const PETAL_GEOMETRY = new THREE.PlaneGeometry(0.15, 0.15);
+const CUBE_MATERIAL = new THREE.MeshStandardMaterial({ color: "#3b82f6", opacity: 0.15, transparent: true });
+const PETAL_MATERIAL = new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, opacity: 0.7, side: THREE.DoubleSide });
 
 /* ==============================
    LIGHT THEME SCENE (Ghibli)
@@ -101,13 +118,10 @@ const FloatingPetals = memo(function FloatingPetals({ isMobile }: { isMobile: bo
     }
   });
 
-  const geo = useMemo(() => new THREE.PlaneGeometry(0.15, 0.15), []);
-  const mat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, opacity: 0.7, side: THREE.DoubleSide }), []);
-
   return (
     <group ref={ref}>
       {petals.map((p, i) => (
-        <mesh key={i} position={p.position} rotation={p.rotation} geometry={geo} material={mat} />
+        <mesh key={i} position={p.position} rotation={p.rotation} geometry={PETAL_GEOMETRY} material={PETAL_MATERIAL} />
       ))}
     </group>
   );
@@ -192,7 +206,6 @@ const FloatingCubes = memo(function FloatingCubes({ isMobile }: { isMobile: bool
 
   const { speed, isPaused } = useMotion();
   const ref = useRef<THREE.Group>(null);
-  const mat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#3b82f6", opacity: 0.15, transparent: true }), []);
 
   useFrame((state) => {
     if (!ref.current || isPaused) return;
@@ -210,7 +223,7 @@ const FloatingCubes = memo(function FloatingCubes({ isMobile }: { isMobile: bool
   return (
     <group ref={ref}>
       {cubes.map((cube, i) => (
-        <mesh key={i} position={cube.position} material={mat}>
+        <mesh key={i} position={cube.position} material={CUBE_MATERIAL}>
           <boxGeometry args={[cube.size, cube.size, cube.size]} />
         </mesh>
       ))}
@@ -263,6 +276,17 @@ export default function NeuralFluidBackground() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  const powerPreference = isMobile ? "low-power" : "high-performance";
+
+  if (prefersReducedMotion) {
+    return (
+      <div className={`fixed inset-0 z-[-1] overflow-hidden transition-colors duration-700 ${
+        isDark ? "bg-[#020617]" : "bg-gradient-to-b from-[#e0f2fe] via-[#f0f9ff] to-white"
+      }`} />
+    );
+  }
 
   return (
     <div className={`fixed inset-0 z-[-1] overflow-hidden transition-colors duration-700 ${
@@ -294,7 +318,7 @@ export default function NeuralFluidBackground() {
         performance={{ min: 0.5 }} 
         gl={{ 
           antialias: false, 
-          powerPreference: "high-performance",
+          powerPreference,
           alpha: true,
           stencil: false,
           depth: true

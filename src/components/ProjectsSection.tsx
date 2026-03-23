@@ -59,6 +59,7 @@ const ProjectCard = memo(function ProjectCard({ project, index }: { project: typ
   const blurValue = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [15, 0, 0, 15]);
   const filter = useMotionTemplate`blur(${blurValue}px)`;
   const yParallax = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  const lensFlareX = useTransform(scrollYProgress, [0, 1], ["-150%", "150%"]);
 
   return (
     <m.div
@@ -67,7 +68,7 @@ const ProjectCard = memo(function ProjectCard({ project, index }: { project: typ
       className="glass-shinkai group overflow-hidden border-none shadow-xl hover:shadow-2xl h-full flex flex-col dark:glow-box-hover dark:three-d-card dark:hover:bg-white/[0.03] perspective-2000"
     >
       <m.div 
-        style={{ left: useTransform(scrollYProgress, [0, 1], ["-150%", "150%"]) }}
+        style={{ left: lensFlareX }}
         className="absolute inset-y-0 w-64 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 blur-3xl z-20 pointer-events-none" 
       />
 
@@ -89,10 +90,10 @@ const ProjectCard = memo(function ProjectCard({ project, index }: { project: typ
         
         {/* Quick Links Overlay */}
         <div className="absolute top-6 right-6 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <a href={project.links.github} className="p-3 bg-white/10 backdrop-blur-md rounded-xl text-white hover:bg-white/20 transition-all border border-white/10">
+          <a href={project.links.github} aria-label={`View ${project.title} on GitHub`} className="p-3 bg-white/10 backdrop-blur-md rounded-xl text-white hover:bg-white/20 transition-all border border-white/10">
             <Github size={18} />
           </a>
-          <a href={project.links.demo} className="p-3 bg-white text-blue-600 rounded-xl hover:bg-blue-50 transition-all shadow-lg">
+          <a href={project.links.demo} aria-label={`View ${project.title} live demo`} className="p-3 bg-white text-blue-600 rounded-xl hover:bg-blue-50 transition-all shadow-lg">
              <ExternalLink size={18} />
           </a>
         </div>
