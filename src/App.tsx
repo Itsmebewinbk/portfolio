@@ -5,6 +5,7 @@ import { MotionProvider } from "@/components/MotionProvider";
 import { LazyMotion, domAnimation } from "framer-motion";
 
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -21,6 +22,7 @@ const App = () => (
             </Routes>
           </Suspense>
           <Analytics />
+          <SpeedInsights />
         </BrowserRouter>
       </LazyMotion>
     </MotionProvider>
