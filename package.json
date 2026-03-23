@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vercel-link": "vercel link",
+    "vercel-pull": "vercel env pull .env.local",
+    "vercel-deploy-preview": "vercel",
+    "vercel-deploy-prod": "vercel --prod"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",
